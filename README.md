@@ -66,11 +66,11 @@ The app will be available at `http://localhost:8080`.
 
 ### Redirect
 
-`GET /{code}` — redirects to the original URL (HTTP 302)
+`GET /{code}` - redirects to the original URL (HTTP 302)
 
 ### Stats
 
-`GET /stats/{code}` — returns link details and click count
+`GET /stats/{code}` - returns link details and click count
 
 ## Error codes
 
