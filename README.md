@@ -74,8 +74,8 @@ The app will be available at `http://localhost:8080`.
 
 ## Error codes
 
-| Status | Meaning |
-|--------|---------|
-| 400 | Invalid input |
-| 404 | Link not found or expired |
-| 409 | Alias already taken |
+| Status | Meaning                   |
+|--------|---------------------------|
+| 400    | Invalid input             |
+| 404    | Link not found or expired |
+| 409    | Alias already taken       |
