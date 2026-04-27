@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShortUrl</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            gap: 1.5rem;
+        }
+
+        header {
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: #a31f34;
+        }
+
+        header p {
+            color: #666;
+            margin-top: 0.25rem;
+            font-size: 0.95rem;
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            border-color: #a31f34;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 0.75rem;
+            background: #a31f34;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-primary:hover { background: #7f1728; }
+
+        .result-box {
+            display: none;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            display: none;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .result-box .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #9ca3af;
+            font-weight: 600;
+        }
+
+        .result-box a {
+            color: #a31f34;
+            font-size: 1.05rem;
+            word-break: break-all;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .result-box a:hover { text-decoration: underline; }
+
+        .stats-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .clicks-badge {
+            background: #f3f4f6;
+            border-radius: 999px;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+            color: #374151;
+        }
+
+        .btn-secondary {
+            background: none;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 0.35rem 0.85rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+            color: #374151;
+            transition: background 0.2s;
+        }
+
+        .btn-secondary:hover { background: #f3f4f6; }
+
+        .error {
+            padding: 0.75rem 1rem;
+            background: #fef2f2;
+            color: #dc2626;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🔗 ShortUrl</h1>
+    <p>Shorten your links instantly</p>
+</header>
+
+<div class="card">
+    <input type="text" id="urlInput" placeholder="https://example.com" />
+    <input type="text" id="aliasInput" placeholder="Custom alias (optional)" />
+    <input type="datetime-local" id="expiresInput" />
+    <button class="btn-primary" onclick="shorten()">Shorten</button>
+
+    <div class="error" id="error"></div>
+
+    <div class="result-box" id="result">
+        <span class="label">Your short link</span>
+        <a id="shortUrl" href="#" target="_blank"></a>
+        <div class="stats-row">
+            <span class="clicks-badge">👆 <span id="clicks">0</span> clicks</span>
+            <button class="btn-secondary" onclick="refreshStats()">Refresh</button>
+        </div>
+        <div id="expiresRow" style="font-size: 0.875rem; color: #9ca3af; display: none; ">
+            ⏳ Expires: <span id="expiresAt"></span>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentCode = null;
+
+    async function shorten() {
+        const url = document.getElementById('urlInput').value;
+        const alias = document.getElementById('aliasInput').value;
+        const body = { url };
+        if (alias) body.alias = alias;
+        const expires = document.getElementById('expiresInput').value;
+        if (expires) body.expires = expires;
+
+        try {
+            const response = await fetch('/shorten', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                showError(data.error || JSON.stringify(data.errors));
+                return;
+            }
+
+            currentCode = data.code;
+            const shortLink = `${window.location.origin}/${data.code}`;
+            document.getElementById('shortUrl').href = shortLink;
+            document.getElementById('shortUrl').textContent = shortLink;
+            document.getElementById('clicks').textContent = data.clicks;
+
+            if (data.expiresAt) {
+                const date = new Date(data.expiresAt);
+                document.getElementById('expiresAt').textContent = date.toLocaleDateString('en-GB');
+                document.getElementById('expiresRow').style.display = 'block';
+            } else {
+                document.getElementById('expiresRow').style.display = 'none';
+            }
+
+            document.getElementById('result').style.display = 'flex';
+            document.getElementById('error').style.display = 'none';
+
+        } catch (err) {
+            showError('Something went wrong, please try again.');
+        }
+    }
+
+    function showError(message) {
+        const el = document.getElementById('error');
+        el.textContent = message;
+        el.style.display = 'block';
+        document.getElementById('result').style.display = 'none';
+    }
+
+    async function refreshStats() {
+        if (!currentCode) return;
+        const response = await fetch(`/stats/${currentCode}`);
+        const data = await response.json();
+        document.getElementById('clicks').textContent = data.clicks;
+    }
+</script>
+</body>
+</html>
