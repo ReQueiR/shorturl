@@ -1,8 +1,8 @@
-package com.racetm.rApp.controllers
+package com.racetm.shorturl.controllers
 
-import com.racetm.rApp.dto.ShortUrlRequest
-import com.racetm.rApp.models.ShortUrl
-import com.racetm.rApp.services.ShortUrlService
+import com.racetm.shorturl.dto.ShortUrlRequest
+import com.racetm.shorturl.models.ShortUrl
+import com.racetm.shorturl.services.ShortUrlService
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 import org.springframework.http.HttpStatus

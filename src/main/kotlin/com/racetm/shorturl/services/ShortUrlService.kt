@@ -1,7 +1,7 @@
-package com.racetm.rApp.services
+package com.racetm.shorturl.services
 
-import com.racetm.rApp.models.ShortUrl
-import com.racetm.rApp.repository.ShortUrlRepository
+import com.racetm.shorturl.models.ShortUrl
+import com.racetm.shorturl.repository.ShortUrlRepository
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.UUID

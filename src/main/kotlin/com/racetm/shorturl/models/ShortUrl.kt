@@ -1,4 +1,4 @@
-package com.racetm.rApp.models
+package com.racetm.shorturl.models
 
 import jakarta.persistence.*
 import java.time.LocalDateTime

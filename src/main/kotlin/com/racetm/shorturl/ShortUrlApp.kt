@@ -1,11 +1,11 @@
-package com.racetm.rApp
+package com.racetm.shorturl
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class RAppApplication
+class ShortUrlApp
 
 fun main(args: Array<String>) {
-	runApplication<RAppApplication>(*args)
+	runApplication<ShortUrlApp>(*args)
 }

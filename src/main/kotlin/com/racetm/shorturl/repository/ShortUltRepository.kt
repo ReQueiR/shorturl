@@ -1,6 +1,6 @@
-package com.racetm.rApp.repository
+package com.racetm.shorturl.repository
 
-import com.racetm.rApp.models.ShortUrl
+import com.racetm.shorturl.models.ShortUrl
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 

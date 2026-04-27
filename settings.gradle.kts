@@ -1,1 +1,1 @@
-rootProject.name = "rApp"
+rootProject.name = "ShortURL"

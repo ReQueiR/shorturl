@@ -1,4 +1,4 @@
-package com.racetm.rApp.controllers
+package com.racetm.shorturl.controllers
 
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus

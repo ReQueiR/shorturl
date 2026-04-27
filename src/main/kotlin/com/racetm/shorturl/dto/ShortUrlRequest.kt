@@ -1,4 +1,4 @@
-package com.racetm.rApp.dto
+package com.racetm.shorturl.dto
 
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
