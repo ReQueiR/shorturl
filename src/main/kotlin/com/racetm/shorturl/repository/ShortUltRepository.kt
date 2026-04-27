@@ -7,5 +7,4 @@ import org.springframework.stereotype.Repository
 @Repository
 interface ShortUrlRepository: JpaRepository<ShortUrl, Long> {
     fun findByCode(code: String): ShortUrl?
-
 }

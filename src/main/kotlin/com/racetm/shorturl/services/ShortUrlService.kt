@@ -11,12 +11,14 @@ class ShortUrlService(private val repository: ShortUrlRepository) {
     fun shorten(orgUrl: String, alias: String? = null, expiresAt: LocalDateTime? = null): ShortUrl {
         val code = alias ?: UUID.randomUUID().toString().take(6)
         val shortened = ShortUrl(code = code, originalUrl = orgUrl, expiresAt = expiresAt)
+
         return repository.save(shortened)
     }
 
     fun resolve(code: String): String? {
         val shortUrl = repository.findByCode(code) ?: return null
         val expiresAt = shortUrl.expiresAt
+
         if (expiresAt != null && expiresAt.isBefore(LocalDateTime.now())) {
             return null
         }
