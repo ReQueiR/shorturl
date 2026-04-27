@@ -11,17 +11,17 @@ A simple URL shortener REST API built with Kotlin and Spring Boot.
 
 ## Tech Stack
 
-- Kotlin + Spring Boot 4
-- PostgreSQL
-- Spring Data JPA
-- Bean Validation
+* Kotlin + Spring Boot 4
+* PostgreSQL
+* Spring Data JPA
+* Bean Validation
 
 ## Getting Started
 
 ### Prerequisites
 
-- Java 24+
-- PostgreSQL
+* Java 24+
+* PostgreSQL
 
 ### Database setup
 
